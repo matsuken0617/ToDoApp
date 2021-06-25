@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ログイン</title> 
+</head>
+
+<body>
+    <h1>ToDo管理アプリ</h1>
+    <img src="../static/img/todo_people.png" alt="todo_people">
+    <h2>ログイン</h2>
+    <p>メンバーIDを入力して，「ログイン」を押してください．</p>
+    <form role="form" th:action="@{/login}" th:object="${LoginForm}" method="POST">
+        <table>
+            <tr>
+                <td><label>メンバーID: </label></td>
+                <td><input type="text" required th:field="*{mid}" /></td>
+            </tr>
+        </table>
+        <p><input type="submit" value="ログイン" /></p>
+    </form>
+</body>
+
+</html>

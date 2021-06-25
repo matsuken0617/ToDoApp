@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ToDo管理画面</title>
+</head>
+
+<body>
+    <h1>ToDo管理画面</h1>
+    <p>
+        <a th:href=@{/alllist}>みんなのToDo</a><br />
+        <a th:href=@{/index}>ログアウト</a> 
+    </p>
+    <h2>[[${name}]]さんのToDoリスト</h2>
+    <table border="1">
+        <tr>
+            <th>No.</th>
+            <th>タイトル</th>
+            <th>作成日時</th>
+            <th>コマンド</th>
+        </tr>
+        <tr th:each="td: ${todo}">
+            <td>[[${td.seq}]]</td>
+            <td>[[${td.title}]]</td>
+            <td>[[${td.createdAt}]]</td>
+        </tr>
+    </table>
+
+</body>
+
+</html>
