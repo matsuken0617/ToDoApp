@@ -31,7 +31,6 @@ public class MemberController {
        model.addAttribute("members", members);
        MemberForm form = new MemberForm();
        model.addAttribute("MemberForm", form);
-       
        return "register";
    }
    /**
@@ -40,7 +39,7 @@ public class MemberController {
     * @param model
     * @return
     */
-   @PostMapping("/check") 
+   @PostMapping("/check")
    String checkUserForm(@ModelAttribute(name = "MemberForm") MemberForm form,  Model model) {
        model.addAttribute("MemberForm", form);
        return "check";
@@ -68,4 +67,5 @@ public class MemberController {
        mService.deleteMember(mid);
        return showUserForm(model);
    }
+
 }
