@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import jp.kobespiral.matsuba.todo.dto.LoginForm;
 import jp.kobespiral.matsuba.todo.dto.ToDoForm;
+import jp.kobespiral.matsuba.todo.entity.Member;
 import jp.kobespiral.matsuba.todo.entity.ToDo;
 import jp.kobespiral.matsuba.todo.service.MemberService;
 import jp.kobespiral.matsuba.todo.service.ToDoService;
@@ -23,7 +23,7 @@ public class ToDoController {
     ToDoService tService;
     @Autowired
     MemberService mService;
-    
+
     /**
      * トップページ HTTP-GET /index
      * @return
@@ -57,6 +57,9 @@ public class ToDoController {
      */
     @GetMapping("/{mid}/list")
     String showToDoList(@PathVariable String mid, Model model) {
+        // ユーザ
+        Member m = mService.getMember(mid);
+        model.addAttribute("user", m);
         // ToDoリスト
         List<ToDo> todos = tService.getToDoList(mid);
         model.addAttribute("todos", todos);
@@ -72,17 +75,41 @@ public class ToDoController {
     /**
      * ToDoを追加する
      */
-    @PostMapping("/{mid}/list")
+    @PostMapping("/{mid}/addtodo")
     String addToDo(
-        @ModelAttribute(name = "ToDoForm") ToDoForm form, 
-        @PathVariable String mid, 
+        @ModelAttribute(name = "ToDoForm") ToDoForm form,
+        @PathVariable String mid,
         Model model
     ) {
         tService.createToDo(mid, form);
-        return "redirect:/" + mid + "/list";
+        return showToDoList(mid, model);
     }
 
-    @PutMapping("/{mid}/list")
-    String 
+    /**
+     * ToDoをDoneに更新する
+     */
+    @GetMapping("/{mid}/list/done/{seq}")
+    String checkDone(
+        @PathVariable Long seq,
+        @PathVariable String mid,
+        Model model
+    ) {
+        tService.checkDone(seq);
+        return showToDoList(mid, model);
+    }
+
+    @GetMapping("/{mid}/alllist")
+    String showAllList(
+        @PathVariable String mid,
+        Model model
+    ) {
+        // ToDoリスト
+        List<ToDo> todos = tService.getToDoList();
+        model.addAttribute("todos", todos);
+        // Doneリスト
+        List<ToDo> dones = tService.getDoneList();
+        model.addAttribute("dones", dones);
+        return "alllist";
+    }
 
 }

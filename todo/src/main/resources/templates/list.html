@@ -9,10 +9,20 @@
 <body>
     <h1>ToDo管理画面</h1>
     <p>
-        <a th:href=@{/alllist}>みんなのToDo</a><br />
-        <a th:href=@{/index}>ログアウト</a> 
+        <a th:href=@{/{mid}/alllist(mid=${user.mid})}>みんなのToDo</a><br />
+        <a th:href=@{/index}>ログアウト</a>
     </p>
-    <h2>[[${name}]]さんのToDoリスト</h2>
+    <h2>ToDoを追加する</h2>
+    <form role="form" th:action="@{/{mid}/addtodo(mid=${user.mid})}" th:object="${ToDoForm}" method="post">
+        <table>
+            <tr>
+                <td><label>タイトル</label></td>
+                <td><input type="text" required th:field="*{title}" /></td>
+            </tr>
+        </table>
+        <p><input type="submit" value="登録" /></p>
+    </form>
+    <h2>[[${user.name}]]さんのToDoリスト</h2>
     <table border="1">
         <tr>
             <th>No.</th>
@@ -20,10 +30,24 @@
             <th>作成日時</th>
             <th>コマンド</th>
         </tr>
-        <tr th:each="td: ${todo}">
+        <tr th:each="td: ${todos}">
             <td>[[${td.seq}]]</td>
             <td>[[${td.title}]]</td>
             <td>[[${td.createdAt}]]</td>
+            <td><a th:href=@{/{m}/list/done/{s}(m=${td.mid},s=${td.seq})}>Done</a></td>
+        </tr>
+    </table>
+    <h2>[[${user.name}]]さんのDoneリスト</h2>
+    <table border="1">
+        <tr>
+            <th>No.</th>
+            <th>タイトル</th>
+            <th>終了日時</th>
+        </tr>
+        <tr th:each="td: ${dones}">
+            <td>[[${td.seq}]]</td>
+            <td>[[${td.title}]]</td>
+            <td>[[${td.doneAt}]]</td>
         </tr>
     </table>
 

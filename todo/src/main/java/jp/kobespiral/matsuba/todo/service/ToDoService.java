@@ -1,5 +1,6 @@
 package jp.kobespiral.matsuba.todo.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,5 +75,15 @@ public class ToDoService {
     public List<ToDo> getDoneList(){
         List<ToDo> tdList = tdRepo.findByDoneTrue();
         return tdList;
+    }
+
+    /**
+     * 指定したToDoをDoneに変更
+     */
+    public ToDo checkDone(Long seq) {
+        ToDo td = getToDo(seq);
+        td.setDone(true);
+        td.setDoneAt(new Date());
+        return tdRepo.save(td);
     }
 }
