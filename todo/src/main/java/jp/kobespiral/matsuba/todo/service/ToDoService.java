@@ -86,4 +86,26 @@ public class ToDoService {
         td.setDoneAt(new Date());
         return tdRepo.save(td);
     }
+
+    /**
+     * 指定したToDoのタイトルを更新
+     * @param mid
+     * @param seq
+     * @param form
+     * @return
+     */
+    public ToDo updateToDo(String mid, Long seq, ToDoForm form) {
+        ToDo td = getToDo(seq);
+        td.setTitle(form.toEntity(mid).getTitle());
+        return tdRepo.save(td);
+    }
+
+    /**
+     * 指定したToDoを削除
+     * @param mid
+     * @param seq
+     */
+    public void deleteToDo(String mid, Long seq) {
+        tdRepo.deleteById(seq);
+    }
 }
